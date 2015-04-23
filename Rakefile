@@ -3,8 +3,13 @@ require "bundler/gem_tasks"
 require "cirru/parser"
 require "json"
 
-desc "demo"
-task "demo" do
+desc 'nothing'
+task 'nothing' do
+  Cirru::Parser.parse('code', 'file')
+end
+
+desc "test"
+task "test" do
   names = [
     'comma',
     'demo',
