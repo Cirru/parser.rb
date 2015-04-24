@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jiyinyiyong@gmail.com"]
   spec.summary       = %q{Cirru Parser in Ruby}
   spec.description   = %q{Manually convert cirru-parser into Ruby}
-  spec.homepage      = "http://cirru.org"
+  spec.homepage      = "https://github.com/Cirru/parser.rb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency 'json', '~> 0.3.16'
+  spec.add_development_dependency 'json', '~> 1.8.2'
 end

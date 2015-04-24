@@ -1,6 +1,13 @@
+
 # Cirru::Parser
 
-TODO: Write a gem description
+Cirru Parser in Ruby
+
+## Develop
+
+```
+ruby test.rb
+```
 
 ## Installation
 
@@ -12,15 +19,27 @@ gem 'cirru-parser'
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install cirru-parser
+```
+$ gem install cirru-parser
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'cirru/parser'
+
+Cirru::Parser.parse 'code', 'filename'
+# => returns tree
+
+Cirru::Parser.pare 'code', 'filename'
+# => returns simplified tree
+```
 
 ## Contributing
 
