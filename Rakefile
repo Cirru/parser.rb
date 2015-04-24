@@ -1,11 +1,12 @@
 require "bundler/gem_tasks"
 
-require "cirru/parser"
 require "json"
+
+require "cirru/parser"
 
 desc 'nothing'
 task 'nothing' do
-  Cirru::Parser.parse('code', 'file')
+  res = Cirru::Parser.parse('code', 'file')
 end
 
 desc "test"
