@@ -23,13 +23,18 @@ module Cirru
         xs, buffer, state, code = *res
       end
       res = parsing xs, buffer, state, code
-      # res = res.map Tree.resolveDollar
-      # res = res.map Tree.resolveComma
+      res = res.map do |item|
+        Tree.resolveDollar item
+      end
+      res = res.map do |item|
+        Tree.resolveComma item
+      end
       res
     end
 
     def self.pare(code, filename)
       res = self.parse code, filename
+      # p 'before shorten', res
       shorten res
     end
   end
@@ -38,9 +43,11 @@ end
 
 def shorten(xs)
   if xs.is_a? Array
-    xs.map shorten
+    xs.map do |item|
+      shorten(item)
+    end
   else
-    xs.text
+    xs[:text]
   end
 end
 
@@ -61,6 +68,7 @@ end
 def token_eof(xs, buffer, state, code)
   buffer[:ex] = state[:x]
   buffer[:ey] = state[:y]
+  # p 'appendBuffer', xs, state[:level], buffer
   xs = Tree.appendBuffer xs, state[:level], buffer
   buffer = nil
   xs
@@ -273,11 +281,11 @@ end
 
 def parsing(xs, buffer, state, code)
   args = [xs, buffer, state, code]
-  puts "\n"
-  puts "xs: \t#{xs}"
-  puts "buffer: \t#{buffer}"
-  puts "state: \t#{state}"
-  puts "code: \t#{code}"
+  # puts "\n"
+  # puts "xs: \t#{xs}"
+  # puts "buf: \t#{buffer}"
+  # puts "state: \t#{state[:name]}"
+  # print "code: \t"; p "#{code}"
   # scope = {code, xs, buffer, state}
   # window.debugData.push (lodash.cloneDeep scope)
   eof = code.length == 0
@@ -287,7 +295,7 @@ def parsing(xs, buffer, state, code)
     if eof      then  return escape_eof(*args)
     else
       case char
-      when '\n' then  return escape_newline(*args)
+      when "\n" then  return escape_newline(*args)
       when 'n'  then  return escape_n(*args)
       when 't'  then  return escape_t(*args)
       else            return escape_else(*args)
@@ -297,8 +305,8 @@ def parsing(xs, buffer, state, code)
     if eof      then  return string_eof(*args)
     else
       case char
-      when '\\' then  return string_backslash(*args)
-      when '\n' then  return string_newline(*args)
+      when "\\" then  return string_backslash(*args)
+      when "\n" then  return string_newline(*args)
       when '"'  then  return string_quote(*args)
       else            return string_else(*args)
       end
@@ -308,7 +316,7 @@ def parsing(xs, buffer, state, code)
     else
       case char
       when ' '  then  return space_space(*args)
-      when '\n' then  return space_newline(*args)
+      when "\n" then  return space_newline(*args)
       when '('  then  return space_open(*args)
       when ')'  then  return space_close(*args)
       when '"'  then  return space_quote(*args)
@@ -320,7 +328,7 @@ def parsing(xs, buffer, state, code)
     else
       case char
       when ' '  then  return token_space(*args)
-      when '\n' then  return token_newline(*args)
+      when "\n" then  return token_newline(*args)
       when '('  then  return token_open(*args)
       when ')'  then  return token_close(*args)
       when '"'  then  return token_quote(*args)
@@ -332,7 +340,7 @@ def parsing(xs, buffer, state, code)
     else
       case char
       when ' '  then  return indent_space(*args)
-      when '\n' then  return indent_newilne(*args)
+      when "\n" then  return indent_newilne(*args)
       when ')'  then  return indent_close(*args)
       else            return indent_else(*args)
       end

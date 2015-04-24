@@ -13,6 +13,7 @@ module Tree
   end
 
   def self.resolveDollar(*args)
+    # p 'resolveDollar args', args
     resolveDollarHelper *args
   end
 
@@ -23,7 +24,7 @@ end
 
 def appendBufferHelper(xs, level, buffer)
   if level == 0
-    xs[0...-1] + [buffer]
+    xs[0..-1] + [buffer]
   else
     res = appendBufferHelper xs[-1], (level - 1), buffer
     xs[0...-1] + [res]
@@ -57,7 +58,7 @@ def dollarHelper(before, after)
   if cursor.is_a? Array
     chunk = resolveDollarHelper cursor
     dollarHelper (before + [chunk]), after[1..-1]
-  elsif cursor.text == '$'
+  elsif cursor[:text] == '$'
     chunk = resolveDollarHelper after[1..-1]
     before + [chunk]
   else
@@ -66,7 +67,7 @@ def dollarHelper(before, after)
 end
 
 def resolveDollarHelper(xs)
-  p 'calling resolveDollarHelper', xs
+  # p 'calling resolveDollarHelper', xs
   if xs.length == 0
     return xs
   end
@@ -83,7 +84,7 @@ def commaHelper(before, after)
     if head.is_a? Array
       chunk = resolveCommaHelper cursor
       commaHelper (before + [chunk]), after[1..-1]
-    elsif head.text == ','
+    elsif head[:text] == ','
       commaHelper before, ((resolveCommaHelper cursor[1..-1]) + after[1..-1])
     else
       chunk = resolveCommaHelper cursor
